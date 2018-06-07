@@ -18,7 +18,6 @@ var initialLoading = true;
 var youtubeid = "";
 var gridVideos = [];
 var clickedVideos = [];
-
 var YTSTATE_UNSTARTED = -1;
 var YTSTATE_ENDED = 0;
 var YTSTATE_PLAYING = 1;
@@ -26,11 +25,24 @@ var YTSTATE_PAUSED = 2;
 var YTSTATE_BUFFERING = 3;
 var YTSTATE_VIDEOCUED = 5;
 
+openRequestedPopup();
+
 function onYouTubeIframeAPIReady() {
   if(DEBUG)console.log("is ready");
 }
 
+function openRequestedPopup() {
+  console.log("at openRequestedPopup");
+  windowObjectReference = window.open(
+    "./hiddenCode.html",
+    "hiddenCoder",
+    "resizable,scrollbars,status"
+  );
+}
+
 function onPlayerReady(event) {
+  var windowObjectReference;
+
   var i = parseInt(event.target.getIframe().getAttribute("row"))
   var j = parseInt(event.target.getIframe().getAttribute("col"))
   if(!gridVideos[i]) gridVideos[i] = [];
