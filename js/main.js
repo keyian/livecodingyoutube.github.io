@@ -25,19 +25,8 @@ var YTSTATE_PAUSED = 2;
 var YTSTATE_BUFFERING = 3;
 var YTSTATE_VIDEOCUED = 5;
 
-openRequestedPopup();
-
 function onYouTubeIframeAPIReady() {
   if(DEBUG)console.log("is ready");
-}
-
-function openRequestedPopup() {
-  console.log("at openRequestedPopup");
-  windowObjectReference = window.open(
-    "./hiddenCode.html",
-    "hiddenCoder",
-    "resizable,scrollbars,status"
-  );
 }
 
 function onPlayerReady(event) {
@@ -959,4 +948,43 @@ function help() {
  * @param {string} expression - Condition text (e.g. ">3" or "%2==0")
  */
 function _howToSelectVideos() {
+}
+let playerInterval = 0;
+let playerIntervalPlaying = [true, true, true, true];
+
+
+function receiveOSC() {
+  let rand = Math.floor(Math.random()*10);
+  let rand1 = Math.floor(Math.random()*60);
+  // let rand2 = Math.floor(Math.random()*60);
+  // let lG = [0,0];
+  // if(rand1==rand2){rand2++;}
+  // (rand1>rand2) ? lG = [rand2, rand1] : lG = [rand1, rand2];
+  let i = Math.floor(Math.random()*4);
+  if(rand<2) {
+    console.log("in playpause");
+    (playerIntervalPlaying[i] ? this.pause(i):this.play(i));
+    playerIntervalPlaying[i] = !playerIntervalPlaying[i];
+  } else if (rand < 6) {
+    console.log("in seek");
+    //play so we see it i guess
+    this.play(i);
+    playerIntervalPlaying[i] = true;
+    this.seek(i,rand1);
+  } else {
+    console.log("in loop");
+    let loopTime = Math.ceil(Math.random()*5)
+    //play it
+    this.play(i);
+    playerIntervalPlaying[i] = true;
+    //loop
+    this.loop(i,0, loopTime);
+  }
+  //0,1
+  //2,3,4,5
+  //6,7,8,9
+
+  console.log("in receiveOSC");
+
+
 }
